@@ -10,21 +10,20 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #ifndef _WIN32
-    #include <sys/time.h>
+#include <sys/time.h>
 #else
-    #include <windows.h>
-    #include <sys/timeb.h>
+#include <windows.h>
+#include <sys/timeb.h>
 #endif
 #include "twisted.h"
-#include "init.c"
-#include "utils.c"
-#include "bitutils.c"
-#include "attacks.c"
-#include "movegen.c"
-#include "position.c"
-#include "eval.c"
-#include "search.c"
-#include "tests.c"
-#include "uci.c"
-#include "main.c"
-
+#include "init.h"
+#include "utils.h"
+#include "bitutils.h"
+#include "attacks.h"
+#include "movegen.h"
+#include "position.h"
+#include "eval.h"
+#include "search.h"
+#include "tests.h"
+#include "uci.h"
+#include "main.h"

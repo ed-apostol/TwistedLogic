@@ -68,7 +68,6 @@ Print(4, "file \"%s\", line %d, assertion \"" #a "\" failed\n",__FILE__,__LINE__
 #define PONDERING           2
 #define ANALYSING           3
 
-
 /*********************************************/
 /* DATA STRUCTURES                           */
 /*********************************************/
@@ -83,128 +82,127 @@ typedef signed long s32;
 typedef signed short s16;
 typedef signed char s8;
 /* the move structure */
-typedef struct{
-    u32 m;
-    int s;
+typedef struct {
+	u32 m;
+	int s;
 }move_t;
 /* the move list structure */
-typedef struct{
-    move_t list[MAXMOVES];
-    u32 size;
-    u32 pos;
+typedef struct {
+	move_t list[MAXMOVES];
+	u32 size;
+	u32 pos;
 }movelist_t;
 /* the hash type structure */
-typedef union{
-    u64 b;
-    u32 lock;
-    u32 key;
+typedef union {
+	u64 b;
+	u32 lock;
+	u32 key;
 }bit64_t;
 /* the undo structure */
-typedef struct{
-    u32 lastmove;
-    u32 castle;
-    u32 fifty;
-    u32 incheck;
-    u32 phase;
-    int epsq;
-    int open[2];
-    int end[2];
-    bit64_t hash;
-    bit64_t phash;
-    bit64_t mathash;
+typedef struct {
+	u32 lastmove;
+	u32 castle;
+	u32 fifty;
+	u32 incheck;
+	u32 phase;
+	int epsq;
+	int open[2];
+	int end[2];
+	bit64_t hash;
+	bit64_t phash;
+	bit64_t mathash;
 }undo_t;
 /* the position structure */
-typedef struct{
-    u64 pawns;
-    u64 knights;
-    u64 bishops;
-    u64 rooks;
-    u64 queens;
-    u64 kings;
-    u64 color[2];
-    u64 occupied;
-    u32 side;
-    u32 ply;
-    undo_t *status;
-    undo_t undos[MAXDATA];
+typedef struct {
+	u64 pawns;
+	u64 knights;
+	u64 bishops;
+	u64 rooks;
+	u64 queens;
+	u64 kings;
+	u64 color[2];
+	u64 occupied;
+	u32 side;
+	u32 ply;
+	undo_t *status;
+	undo_t undos[MAXDATA];
 }position_t;
 
-typedef struct{
-    u32 thinking_status;
-    u32 depth_is_limited;
-    u32 depth_limit;
-    u32 moves_is_limited;
-    u64 time_is_limited;
-    u64 time_limit_max;
-    u64 time_limit_abs;
-    u64 node_is_limited;
-    u64 node_limit;
+typedef struct {
+	u32 thinking_status;
+	u32 depth_is_limited;
+	u32 depth_limit;
+	u32 moves_is_limited;
+	u64 time_is_limited;
+	u64 time_limit_max;
+	u64 time_limit_abs;
+	u64 node_is_limited;
+	u64 node_limit;
 
-    u64 nodes_since_poll;
-    u64 nodes_between_polls;
-    u64 nodes;
+	u64 nodes_since_poll;
+	u64 nodes_between_polls;
+	u64 nodes;
 
-    u64 start_time;
-    u64 last_time;
+	u64 start_time;
+	u64 last_time;
 
-    int last_value;
-    int best_value;
-    int currmovenumber;
-    int change;
-    int easy;
-    int iteration;
-    int maxplysearched;
-    int legalmoves;
-    int mate_found;
+	int last_value;
+	int best_value;
+	int currmovenumber;
+	int change;
+	int easy;
+	int iteration;
+	int maxplysearched;
+	int legalmoves;
+	int mate_found;
 
-    int history[2][8][64];
-    int killer1[MAXPLY];
-    int killer2[MAXPLY];
+	int history[2][8][64];
+	int killer1[MAXPLY];
+	int killer2[MAXPLY];
 }search_info_t;
-
 
 /*********************************************/
 /* CONSTANTS                                 */
 /*********************************************/
 
 /* the squares */
-enum{
-    a1, b1, c1, d1, e1, f1, g1, h1,
-    a2, b2, c2, d2, e2, f2, g2, h2,
-    a3, b3, c3, d3, e3, f3, g3, h3,
-    a4, b4, c4, d4, e4, f4, g4, h4,
-    a5, b5, c5, d5, e5, f5, g5, h5,
-    a6, b6, c6, d6, e6, f6, g6, h6,
-    a7, b7, c7, d7, e7, f7, g7, h7,
-    a8, b8, c8, d8, e8, f8, g8, h8
+enum {
+	a1, b1, c1, d1, e1, f1, g1, h1,
+	a2, b2, c2, d2, e2, f2, g2, h2,
+	a3, b3, c3, d3, e3, f3, g3, h3,
+	a4, b4, c4, d4, e4, f4, g4, h4,
+	a5, b5, c5, d5, e5, f5, g5, h5,
+	a6, b6, c6, d6, e6, f6, g6, h6,
+	a7, b7, c7, d7, e7, f7, g7, h7,
+	a8, b8, c8, d8, e8, f8, g8, h8
 };
 
 /* used in routines popFirstBit and getFirstBit */
 const int FoldedTable[64] = {
-    63,30, 3,32,59,14,11,33,
-    60,24,50, 9,55,19,21,34,
-    61,29, 2,53,51,23,41,18,
-    56,28, 1,43,46,27, 0,35,
-    62,31,58, 4, 5,49,54, 6,
-    15,52,12,40, 7,42,45,16,
-    25,57,48,13,10,39, 8,44,
-    20,47,38,22,17,37,36,26,
+	63,30, 3,32,59,14,11,33,
+	60,24,50, 9,55,19,21,34,
+	61,29, 2,53,51,23,41,18,
+	56,28, 1,43,46,27, 0,35,
+	62,31,58, 4, 5,49,54, 6,
+	15,52,12,40, 7,42,45,16,
+	25,57,48,13,10,39, 8,44,
+	20,47,38,22,17,37,36,26,
 };
 
 /* used in updating the castle status of the position */
-static const int CastleMask[64]={
-    13, 15, 15, 15, 12, 15, 15, 14,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    15, 15, 15, 15, 15, 15, 15, 15,
-    7, 15, 15, 15,  3, 15, 15, 11
+static const int CastleMask[64] = {
+	13, 15, 15, 15, 12, 15, 15, 14,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	15, 15, 15, 15, 15, 15, 15, 15,
+	7, 15, 15, 15,  3, 15, 15, 11
 };
 
 /* the following constants are used by the Kindergarten bitboard attacks */
-const u64 DiagonalMask[64]={
+const u64 DiagonalMask[64] = {
 0x8040201008040201ULL, 0x0080402010080402ULL, 0x0000804020100804ULL, 0x0000008040201008ULL,
 0x0000000080402010ULL, 0x0000000000804020ULL, 0x0000000000008040ULL, 0x0000000000000080ULL,
 0x4020100804020100ULL, 0x8040201008040201ULL, 0x0080402010080402ULL, 0x0000804020100804ULL,
@@ -223,7 +221,7 @@ const u64 DiagonalMask[64]={
 0x1008040201000000ULL, 0x2010080402010000ULL, 0x4020100804020100ULL, 0x8040201008040201ULL
 };
 
-const u64 AntiDiagMask[64]={
+const u64 AntiDiagMask[64] = {
 0x0000000000000001ULL, 0x0000000000000102ULL, 0x0000000000010204ULL, 0x0000000001020408ULL,
 0x0000000102040810ULL, 0x0000010204081020ULL, 0x0001020408102040ULL, 0x0102040810204080ULL,
 0x0000000000000102ULL, 0x0000000000010204ULL, 0x0000000001020408ULL, 0x0000000102040810ULL,
@@ -242,7 +240,7 @@ const u64 AntiDiagMask[64]={
 0x1020408000000000ULL, 0x2040800000000000ULL, 0x4080000000000000ULL, 0x8000000000000000ULL,
 };
 
-const u8 FirstRankAttacks[64][8]={
+const u8 FirstRankAttacks[64][8] = {
 {0xfe,0xfd,0xfb,0xf7,0xef,0xdf,0xbf,0x7f}, {0x2,0xfd,0xfa,0xf6,0xee,0xde,0xbe,0x7e},
 {0x6,0x5,0xfb,0xf4,0xec,0xdc,0xbc,0x7c}, {0x2,0x5,0xfa,0xf4,0xec,0xdc,0xbc,0x7c},
 {0xe,0xd,0xb,0xf7,0xe8,0xd8,0xb8,0x78}, {0x2,0xd,0xa,0xf6,0xe8,0xd8,0xb8,0x78},
@@ -374,9 +372,9 @@ const u64 FileGBB = 0x4040404040404040ULL;
 const u64 FileHBB = 0x8080808080808080ULL;
 
 const u64 FileBB[8] = {
-    0x0101010101010101ULL, 0x0202020202020202ULL, 0x0404040404040404ULL,
-    0x0808080808080808ULL, 0x1010101010101010ULL, 0x2020202020202020ULL,
-    0x4040404040404040ULL, 0x8080808080808080ULL
+	0x0101010101010101ULL, 0x0202020202020202ULL, 0x0404040404040404ULL,
+	0x0808080808080808ULL, 0x1010101010101010ULL, 0x2020202020202020ULL,
+	0x4040404040404040ULL, 0x8080808080808080ULL
 };
 
 /* the bit masks of Ranks */
@@ -390,12 +388,12 @@ const u64 Rank7BB = 0xFF000000000000ULL;
 const u64 Rank8BB = 0xFF00000000000000ULL;
 
 const u64 RankBB[8] = {
-    0xFFULL, 0xFF00ULL, 0xFF0000ULL, 0xFF000000ULL, 0xFF00000000ULL,
-    0xFF0000000000ULL, 0xFF000000000000ULL, 0xFF00000000000000ULL
+	0xFFULL, 0xFF00ULL, 0xFF0000ULL, 0xFF000000ULL, 0xFF00000000ULL,
+	0xFF0000000000ULL, 0xFF000000000000ULL, 0xFF00000000000000ULL
 };
 
 const u64 EmptyBoardBB = 0ULL;
-const u64 FullBoardBB  = 0xFFFFFFFFFFFFFFFFULL;
+const u64 FullBoardBB = 0xFFFFFFFFFFFFFFFFULL;
 
 const u64 WhiteSquaresBB = 0x55AA55AA55AA55AAULL;
 const u64 BlackSquaresBB = 0xAA55AA55AA55AA55ULL;
@@ -419,20 +417,19 @@ const int Rank7 = 6;
 const int Rank8 = 7;
 
 /* init, mixed, castle, en passant, promotion, no-nothing,
-    from the CRBMG of Sune Fischer */
+	from the CRBMG of Sune Fischer */
 char FenString[6][256] = {
-    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    "r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -",
-    "r3k2r/3q4/2n1b3/7n/1bB5/2N2N2/1B2Q3/R3K2R w KQkq - 0 1",
-    "rnbq1bnr/1pppkp1p/4p3/2P1P3/p5p1/8/PP1PKPPP/RNBQ1BNR w - - 0 1",
-    "rn1q1bnr/1bP1kp1P/1p2p3/p7/8/8/PP1pKPpP/RNBQ1BNR w - - 0 1",
-    "r6r/3qk3/2n1b3/7n/1bB5/2N2N2/1B2QK2/R6R w - - 0 1"
+	"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+	"r3k2r/p1ppqpb1/bn2pnp1/3PN3/1p2P3/2N2Q1p/PPPBBPPP/R3K2R w KQkq -",
+	"r3k2r/3q4/2n1b3/7n/1bB5/2N2N2/1B2Q3/R3K2R w KQkq - 0 1",
+	"rnbq1bnr/1pppkp1p/4p3/2P1P3/p5p1/8/PP1PKPPP/RNBQ1BNR w - - 0 1",
+	"rn1q1bnr/1bP1kp1P/1p2p3/p7/8/8/PP1pKPpP/RNBQ1BNR w - - 0 1",
+	"r6r/3qk3/2n1b3/7n/1bB5/2N2N2/1B2QK2/R6R w - - 0 1"
 };
 
 /* this is the value of pieces(middlegame and endgame) */
-const int PcVal[] = {0, 80, 310, 325, 500, 975, 0};
-const int EndPcVal[] = {0, 100, 310, 325, 500, 975, 0};
-
+const int PcVal[] = { 0, 80, 310, 325, 500, 975, 0 };
+const int EndPcVal[] = { 0, 100, 310, 325, 500, 975, 0 };
 
 /*********************************************/
 /* PRE-COMPUTED ARRAYS                       */
@@ -484,7 +481,6 @@ FILE *logfile;
 FILE *errfile;
 FILE *dumpfile;
 
-
 /*********************************************/
 /* PROTOTYPES                                */
 /*********************************************/
@@ -505,17 +501,17 @@ extern int getDirIndex(int);
 
 /* movegen.c */
 /* utilities for move generation */
-extern u32 GenOneForward(u32,u32);
-extern u32 GenTwoForward(u32,u32);
-extern u32 GenPromote(u32,u32,u32,u32);
-extern u32 GenPromoteStraight(u32,u32,u32);
-extern u32 GenEnPassant(u32,u32);
-extern u32 GenPawnMove(u32,u32,u32);
-extern u32 GenKnightMove(u32,u32,u32);
-extern u32 GenBishopMove(u32,u32,u32);
-extern u32 GenRookMove(u32,u32,u32);
-extern u32 GenQueenMove(u32,u32,u32);
-extern u32 GenKingMove(u32,u32,u32);
+extern u32 GenOneForward(u32, u32);
+extern u32 GenTwoForward(u32, u32);
+extern u32 GenPromote(u32, u32, u32, u32);
+extern u32 GenPromoteStraight(u32, u32, u32);
+extern u32 GenEnPassant(u32, u32);
+extern u32 GenPawnMove(u32, u32, u32);
+extern u32 GenKnightMove(u32, u32, u32);
+extern u32 GenBishopMove(u32, u32, u32);
+extern u32 GenRookMove(u32, u32, u32);
+extern u32 GenQueenMove(u32, u32, u32);
+extern u32 GenKingMove(u32, u32, u32);
 extern u32 GenWhiteOO();
 extern u32 GenWhiteOOO();
 extern u32 GenBlackOO();
@@ -596,7 +592,7 @@ extern void displayPV(search_info_t*, int*, int, int);
 extern int qSearch(position_t*, search_info_t*, int, int, int[]);
 extern int search(position_t*, search_info_t*, int, int, int, int[]);
 extern void getBestMove(position_t*, int, int, int, int, int,
-    int, int, int, int, int, int, int[], int[]);
+	int, int, int, int, int, int, int[], int[]);
 
 /* uci.c */
 extern void uciParseSearchmoves(movelist_t*, char*, int[]);
